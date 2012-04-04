@@ -232,7 +232,7 @@ var sgabello_TEMP = STRUCT([gambe,sedia]);
 var sgabello_TEMP_1 = T([0])([x])(sgabello_TEMP);
 var sgabello_TEMP_2 = T([1])([y])(sgabello_TEMP_1); 
 var sgabello = T([2])([z])(sgabello_TEMP_2);
-DRAW(sgabello);
+DRAW(COLOR([1,1,0])(sgabello));
 }
 	drawSgabello(25,3,1);
 	drawSgabello(29,6,1);
