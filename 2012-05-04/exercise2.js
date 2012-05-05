@@ -1,13 +1,10 @@
-/*
-	Exercise 2
-	Produce the model of the fuselage (local coordinate system).
-*/
+function createFuselage(){
 
 var p0 = [[0,0,-1.8],[2,0,-1.8],[3,0,0],[2,0,3],[0,0,3],[-2,0,2],
 	[-2,0,0],[-2,0,-1.6],[0,0,-1.8]];
 	var p1 = [[0,0,]]
 
-//quadrato
+
 
 
 var c0 = BEZIER(S0)(p0);
@@ -69,9 +66,9 @@ var c18 = BEZIER(S1)([c17,c21]);
 
 var domain2 = DOMAIN([[0,1],[0,1]])([30,50]);
 
-var cockPitMapping = BEZIER(S1)([c16,c17,c18]);
-var cockPit = MAP(cockPitMapping)(domain2);
-DRAW(cockPit);
+var Mapping = BEZIER(S1)([c16,c17,c18]);
+var engine = MAP(Mapping)(domain2);
+DRAW(COLOR([1.0, 0.8, 0.8])(engine));
 
 // PARTE INTERMEDIA DELLA FUSOLIERA
 /*var points = [[0,0,0], [2,0,0], [2,0,2],[0,0,2], [0,0,0]];
@@ -131,9 +128,9 @@ var scaledSquare = MAP (c16)(domain1);
 
 var domain2 = DOMAIN([[0,1],[0,1]])([30,50]);
 
-var cockPitMapping = BEZIER(S1)([c1,c7,c10,c11,c12,c13,c14,c16]);
-var cockPit = MAP(cockPitMapping)(domain2);
-DRAW(cockPit);
+var Mapping = BEZIER(S1)([c1,c7,c10,c11,c12,c13,c14,c16]);
+var fusoliera = MAP(Mapping)(domain2);
+DRAW(COLOR([1.0, 0.8, 0.4,1])(fusoliera));
 //HELIC
 var domain = DOMAIN([[0,1],[0,1],[0,1]])([30, 1, 1]);
 
@@ -160,18 +157,9 @@ var el2R = R([0,1])([PI])(el);
 var el2 = T([0])([2])(el2R);
 
 var completeHelic = STRUCT([el, el2]);
-
-//var completeHelicR = R([0,2])([PI/2])(completeHelic);
 completeHelic = R([1,2])([PI/2])(completeHelic);
 var completeHelicT = T([0,1,2])([-1,-1.5,0])(completeHelic);
-//completeHelicT = R([0])([PI])(completeHelicT);
 DRAW(completeHelicT);
-//back cockpit
-/*
-var p4 = p0.map(function (p) {return [p[0],p[1]+1,p[2]]});
-var c4 = BEZIER(S0)(p4);
-var scaledCircle = MAP(c4)(domain1);
+}
 
-var p5 = p0.map(function (p) {return [p[0],p[1]+1,p[2]]});
-var c5 = BEZIER(S0)(p5);
-var scaledCircle = MAP(c5)(domain1);*/
+createFuselage();
