@@ -1,6 +1,7 @@
 function createAirstrip(){
 
-
+var cerchio = COLOR([0,1,0])(DISK(90)(500000));
+cerchio = T([2])([-10.1])(cerchio);
 var riga = CUBOID([5,98,0]);
  riga =COLOR([0.99,0.99,0.99])( T([1,2])([-28,-9.9])(riga));
  var L =  CUBOID([25,98,0]);
@@ -16,9 +17,10 @@ var riga = CUBOID([5,98,0]);
 
 
 
- DRAW(STRUCT([AirstripLight,Airstrip2,riga]));
+DRAW(STRUCT([AirstripLight,Airstrip2,riga]));
 
-
+DRAW(cerchio);
+//DRAW(T([0])([20])(cerchio));
 
 }
 
