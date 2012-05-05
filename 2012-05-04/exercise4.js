@@ -1,8 +1,4 @@
 function createAirplane() {
-  /*
-  Exercise 2
-  Produce the model of the fuselage (local coordinate system).
-*/
 
 var p0 = [[0,0,-1.8],[2,0,-1.8],[3,0,0],[2,0,3],[0,0,3],[-2,0,2],
   [-2,0,0],[-2,0,-1.6],[0,0,-1.8]];
@@ -27,26 +23,11 @@ var scaledCircle = MAP (c2)(domain1);
 var p3 = p0.map(function (p) {return [p[0]*0.5,p[1]-1,p[2]*0.5]});
 var c3 = BEZIER(S0)(p3);
 var scaledCircle = MAP (c3)(domain1);
-//DRAW(scaledCircle);
 
 var p20 = [[0,-1,-0.9]];
-//var p4 = p0.map(function (p) {return [p[0]*0.9,p[1]-1,p[2]*0.9]});
 var c4 = BEZIER(S0)(p20);
 var scaledCircle = MAP (c4)(domain1);
 var c15 = BEZIER(S1)([c3,c4]);
-
-//DRAW(scaledCircle);
-/*var p14 = p0.map(function (p) {return [p[0]*0.4,p[1]-1.5,p[2]*0.4]});
-var c14 = BEZIER(S0)(p14);
-var scaledCircle = MAP (c14)(domain1);
-DRAW(scaledCircle);
-var p15 = p0.map(function (p) {return [p[0]*0.1,p[1]-2,p[2]*0.1]});
-var c15 = BEZIER(S0)(p15);
-var scaledCircle = MAP (c15)(domain1);
-DRAW(scaledCircle);*/
-
-
-
 
 var domain2 = DOMAIN([[0,1],[0,1]])([30,50]);
 
@@ -63,7 +44,6 @@ var c17 = BEZIER(S0)(p17);
 var scaledCircle = MAP (c17)(domain1);
 
 var p21 = [[0,-1.5,-0.36]];
-//var p4 = p0.map(function (p) {return [p[0]*0.9,p[1]-1,p[2]*0.9]});
 var c21 = BEZIER(S0)(p21);
 var scaledCircle = MAP (c21)(domain1);
 var c18 = BEZIER(S1)([c17,c21]);
@@ -74,10 +54,6 @@ var Mapping = BEZIER(S1)([c16,c17,c18]);
 var hf1= MAP(Mapping)(domain2);
 DRAW(hf1);
 
-// PARTE INTERMEDIA DELLA FUSOLIERA
-/*var points = [[0,0,0], [2,0,0], [2,0,2],[0,0,2], [0,0,0]];
-var polyline = T([0,1,2])([-0.8,1,-1])(POLYLINE(points));
-DRAW(polyline);*/
 var pquadrato = [[0,0,-1], [-0.9,0,-1],[-0.8,0,-1],[-0.7,0,-1],[-0.6,0,-1],[-0.5,0,-1],[-0.4,0,-1],[-0.3,0,-1],[-0.2,0,-1],[-0.1,0,-1],[0,0,-1],[0.1,0,-1],[0.2,0,-1],[0.3,0,-1],
 [0.4,0,-1],[0.5,0,-1],[0.6,0,-1],[0.7,0,-1],[0.8,0,-1],[0.9,0,-1], [1,0,-1], [1,0,-0.9],[1,0,-0.8],[1,0,-0.7],[1,0,-0.6],[1,0,-0.5],[1,0,-0.4],[1,0,-0.3],[1,0,-0.2],[1,0,-0.1],[1,0,0],[1,0,0.1],[1,0,0.2],[1,0,0.3],
 [1,0,0.4],[1,0,0.5],[1,0,0.6],[1,0,0.7],[1,0,0.9], [1,0,1], [0.9,0,1],[0.8,0,1],[0.7,0,1],[0.6,0,1],[0.5,0,1],[0.4,0,1],[0.3,0,1],[0.2,0,1],
@@ -138,9 +114,9 @@ DRAW(COLOR([1.0, 0.8, 0.4,1])(hd));
 //HELIC
 var domain = DOMAIN([[0,1],[0,1],[0,1]])([30, 1, 1]);
 
-var h = 3;
-var w = 2;
-var j = 0.05;
+var h = 2;
+var w = 1;
+var j = 0.0025;
 var points = [[w/2, 0, 0],[0, h-1,0],[0.5, h, 0], [1.5, h, 0], [w, h-1,0], [w/2, 0, 0]];
 var pointFake = [[w/2,0,0],[w/2,0,0]];
 var elicSup = BEZIER(S0)(points);
@@ -158,13 +134,11 @@ var solidHelic = BEZIER(S2)([elicSurface, elicSurface2]);
 var el = MAP(solidHelic)(domain);
 
 var el2R = R([0,1])([PI])(el);
-var el2 = T([0])([2])(el2R);
+var el2 = T([0])([1])(el2R);
 
 var completeHelic = STRUCT([el, el2]);
-
 completeHelic = R([1,2])([PI/2])(completeHelic);
-var completeHelicT = T([0,1,2])([-1,-1.5,0])(completeHelic);
-
+var completeHelicT = T([0,1,2])([-0.5,-1.5,0])(completeHelic);
 DRAW(completeHelicT);
 
   var domain1 = INTERVALS(1)(100);

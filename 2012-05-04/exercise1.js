@@ -1,3 +1,5 @@
+  function createTriplaneWing(){
+
   var domain1 = INTERVALS(1)(100);
   var domain2 = DOMAIN([[0,1],[0,1]])([40,70]);
 
@@ -42,3 +44,6 @@ left_wing = T([0,2])([0.4,0])(left_wing);
  var winglink6 = T([1,2])([-0.15,-1.7])(winglink4);
  DRAW(COLOR([1.0, 0.4, 0.0])(STRUCT([wing_link,winglink4,winglink6])));
   DRAW(COLOR([1.0, 0.8, 0.4,1])(right_wing));
+}
+
+createTriplaneWing();

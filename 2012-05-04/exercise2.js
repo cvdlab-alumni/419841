@@ -134,9 +134,9 @@ DRAW(COLOR([1.0, 0.8, 0.4,1])(fusoliera));
 //HELIC
 var domain = DOMAIN([[0,1],[0,1],[0,1]])([30, 1, 1]);
 
-var h = 3;
-var w = 2;
-var j = 0.05;
+var h = 2;
+var w = 1;
+var j = 0.0025;
 var points = [[w/2, 0, 0],[0, h-1,0],[0.5, h, 0], [1.5, h, 0], [w, h-1,0], [w/2, 0, 0]];
 var pointFake = [[w/2,0,0],[w/2,0,0]];
 var elicSup = BEZIER(S0)(points);
@@ -154,11 +154,11 @@ var solidHelic = BEZIER(S2)([elicSurface, elicSurface2]);
 var el = MAP(solidHelic)(domain);
 
 var el2R = R([0,1])([PI])(el);
-var el2 = T([0])([2])(el2R);
+var el2 = T([0])([1])(el2R);
 
 var completeHelic = STRUCT([el, el2]);
 completeHelic = R([1,2])([PI/2])(completeHelic);
-var completeHelicT = T([0,1,2])([-1,-1.5,0])(completeHelic);
+var completeHelicT = T([0,1,2])([0,-1.5,0])(completeHelic);
 DRAW(completeHelicT);
 }
 
