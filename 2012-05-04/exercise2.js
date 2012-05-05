@@ -30,14 +30,21 @@ var p4 = p0.map(function (p) {return [p[0]*0.9,p[1]-1,p[2]*0.9]});
 var c4 = BEZIER(S0)(p4);
 var scaledCircle = MAP (c4)(domain1);
 DRAW(scaledCircle);
-
+var p14 = p0.map(function (p) {return [p[0]*0.4,p[1]-1.5,p[2]*0.4]});
+var c14 = BEZIER(S0)(p14);
+var scaledCircle = MAP (c14)(domain1);
+DRAW(scaledCircle);
+var p15 = p0.map(function (p) {return [p[0]*0.2,p[1]-2,p[2]*0.2]});
+var c15 = BEZIER(S0)(p15);
+var scaledCircle = MAP (c15)(domain1);
+DRAW(scaledCircle);
 
 
 
 
 var domain2 = DOMAIN([[0,1],[0,1]])([30,50]);
 
-var cockPitMapping = BEZIER(S1)([c0,c1,c2,c3]);
+var cockPitMapping = BEZIER(S1)([c0,c1,c2,c3,c14,c15]);
 var cockPit = MAP(cockPitMapping)(domain2);
 DRAW(cockPit);
 
@@ -90,7 +97,7 @@ var p13 = pquadrato.map(function (p) {return [p[0]*0.8,p[1]+5,p[2]*0.8]});
 var c13 = BEZIER(S0)(p13);
 var scaledSquare = MAP (c13)(domain1);
 DRAW(scaledSquare);
-var p14 = pquadrato.map(function (p) {return [p[0]*0.5,p[1]+10,p[2]*0.5]});
+var p14 = pquadrato.map(function (p) {return [p[0]*0.7,p[1]+10,p[2]*0.7]});
 var c14 = BEZIER(S0)(p14);
 var scaledSquare = MAP (c14)(domain1);
 DRAW(scaledSquare);
