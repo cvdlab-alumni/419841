@@ -1,3 +1,28 @@
+function createAirstrip(){
+
+
+var riga = CUBOID([5,98,0]);
+ riga =COLOR([0.99,0.99,0.99])( T([1,2])([-28,-9.9])(riga));
+ var L =  CUBOID([25,98,0]);
+ var light = CUBOID([0.8,0.8,4]);
+ var light_traslated = T([0])([23])(light);
+ var traslation = T([1])([12]);
+
+ var lights = COLOR([1.0,1.0,0.4])(STRUCT([light_traslated,traslation,light_traslated,traslation,light_traslated,traslation,light_traslated,traslation,light_traslated,traslation,light_traslated,traslation,light_traslated,traslation,light_traslated,traslation,light_traslated,traslation]));
+
+ var AirstripLight = STRUCT([lights,L]);
+ AirstripLight = T([1,2])([-28,-10])(AirstripLight);
+ var Airstrip2 = S([0])([-1])(AirstripLight);
+
+
+
+ DRAW(STRUCT([AirstripLight,Airstrip2,riga]));
+
+
+
+}
+
+createAirstrip();
 function createAirplane() {
 
 var p0 = [[0,0,-1.8],[2,0,-1.8],[3,0,0],[2,0,3],[0,0,3],[-2,0,2],
