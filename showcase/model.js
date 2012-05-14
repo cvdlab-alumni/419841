@@ -568,14 +568,13 @@ exports.bishop = scmodel;
 
 		function insertPiecein(row,column,model){
 
-		if(row<0||row>8) {movedPiece = T([0,1])([row,column])(model);}
-		else {movedPiece = T([0,1])([row,column])(model);}
-		return movedPiece;
+		return movedPiece = T([0,1])([row,column])(model);
+		
 
 	}
 
 	var black = [];
-		black.push(insertPiecein(7,6,pawn));
+		black.push(insertPiecein(6.5,5.5,pawn));
 		/*black.push(insertPiecein(6,6,pawn));
 		black.push(insertPiecein(5,6,pawn));
 		black.push(insertPiecein(1,6,pawn));
@@ -584,13 +583,13 @@ exports.bishop = scmodel;
 		black.push(insertPiecein(-3,2,pawn));
 		black.push(insertPiecein(-3,3,pawn));*/
 		//black.push(insertPiecein(0,7,rook));
-		black.push(insertPiecein(3,7,rook));
-		black.push(insertPiecein(5,5,knight));
+		black.push(insertPiecein(2.5,6.5,rook));
+		black.push(insertPiecein(4.5,4.5,knight));
 		//black.push(insertPiecein(-3,4,knight));
 		//black.push(insertPiecein(7,2,bishop));
-		black.push(insertPiecein(2,4,bishop));
+		black.push(insertPiecein(1.5,3.5,bishop));
 		//black.push(insertPiecein(5,7,CUBOID([0.8,0.8,2])));
-		black.push(insertPiecein(3,5,queenPiece));
+		black.push(insertPiecein(2.5,4.5,queenPiece));
 		var blackPieces = COLOR([0.1,0.1,0.1])(STRUCT(black));
 
 		var white = [];
@@ -603,13 +602,13 @@ exports.bishop = scmodel;
 		white.push(insertPiecein(-2,4,pawn));
 		white.push(insertPiecein(-2,5,pawn));*/
 		//white.push(insertPiecein(0,0,rook));
-		white.push(insertPiecein(4,0,rook));
-		white.push(insertPiecein(4,1,knight));
+		white.push(insertPiecein(4.5,0.5,rook));
+		white.push(insertPiecein(4.5,1.5,knight));
 		//white.push(insertPiecein(-2,6,knight));
-		white.push(insertPiecein(3,2,bishop));
+		white.push(insertPiecein(3.5,2.5,bishop));
 		//white.push(insertPiecein(4,4,bishop));
 		//white.push(insertPiecein(5,0,CUBOID([0.8,0.8,2])));
-		white.push(insertPiecein(2,2,queenPiece));
+		white.push(insertPiecein(0.5,2.5,queenPiece));
 
 	var whitePieces = COLOR([0.99,0.99,0.99])(STRUCT(white));
 
