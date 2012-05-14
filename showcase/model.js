@@ -1,6 +1,135 @@
 !(function (exports){
-	var sphereSurface = function (r) {  
-	  var domain = DOMAIN([[0,PI], [0,2*PI]])([r*30,r*30*2]);
+	var king = [];	
+	var domain2 = DOMAIN([[0,1],[0,2*PI]])([20,35]);
+
+	var r = -1.3;
+	var p0 = [[5+r,0,0], [5.2+r,0,0], [5.2+r,0,0.5], [4.4+r,0,0.6]];
+	var k0 = [0,0,0,1,2,2,2];
+	var c0 = NUBS(S0)(2)(k0)(p0);
+	var m0 = ROTATIONAL_SURFACE(c0);
+	var s0 = MAP(m0)(domain2);	
+	king.push(s0);
+
+	var d1 = 0.5;
+	var p1 = [[4.4+r,0,0.6],[4.7+r,0,0.6],[4.8+r,0,1],
+		[4.7+r,0,1.2],[4.5+r,0,1.3],[3.3+d1+r,0,1.7],[3.25+d1+r,0,1.71],[3.25+d1+r,0,2]];
+	var k1 = [0,0,0,1,2,3,4,5,6,6,6];
+	var c1 = NUBS(S0)(2)(k1)(p1);
+	var m1 = ROTATIONAL_SURFACE(c1);
+	var s1 = MAP(m1)(domain2);	
+	king.push(s1);
+
+	var p2 = [[3.25+d1+r,0,2],[2.9+d1+r,0,2]];
+	var c2 = BEZIER(S0)(p2);
+	var m2 = ROTATIONAL_SURFACE(c2);
+	var s2 = MAP(m2)(domain2);	
+	king.push(s2);
+
+	// corpo del pezzo
+	var p3 = [[2.9+d1+r,0,2],[2.1+d1+r,0,4],[1.8+d1+r,0,8],[2+d1+r,0,10]];
+	var k3 = [0,0,0,1,2,2,2];
+	var c3 = NUBS(S0)(2)(k3)(p3);
+	var m3 = ROTATIONAL_SURFACE(c3);
+	var s3 = MAP(m3)(domain2);	
+	s3 =  T([2])([-0.4])( S([2])([1.2])(s3) );
+	king.push(s3);
+
+	var p4 = [[2+d1+r,0,10],[2.9+d1+r,0,10],
+		[3+r+d1,0,10.2], [2.9+r+d1,0,10.4], [2.3+r+d1,0,10.45]];
+	var k4 = [0,0,0,1,2,3,3,3];
+	var c4 = NUBS(S0)(2)(k4)(p4);
+	var m4 = ROTATIONAL_SURFACE(c4);
+	var s4 = MAP(m4)(domain2);	
+
+	var p5 = [[2.3+d1+r,0,10.45],[2.4+d1+r,0,10.45],
+		[2.45+r+d1,0,10.65], [2.4+r+d1,0,10.86], [1.8+r+d1,0,10.85]];
+	var k5 = [0,0,0,1,2,3,3,3];
+	var c5 = NUBS(S0)(2)(k5)(p5);
+	var m5 = ROTATIONAL_SURFACE(c5);
+	var s5 = MAP(m5)(domain2);	
+
+	var p6 = [[1.8+d1+r,0,10.85],[1.8+d1+r,0,11.15]];
+	var c6 = BEZIER(S0)(p6);
+	var m6 = ROTATIONAL_SURFACE(c6);
+	var s6 = MAP(m6)(domain2);	
+
+	var p7 = [[1.8+d1+r,0,11.15],[1.9+d1+r,0,11.15],
+		[1.95+r+d1,0,11.25], [1.9+r+d1,0,11.35], [1.8+r+d1,0,11.35]];
+	var k7 = [0,0,0,1,2,3,3,3];
+	var c7 = NUBS(S0)(2)(k7)(p7);
+	var m7 = ROTATIONAL_SURFACE(c7);
+	var s7 = MAP(m7)(domain2);	
+
+	var x = 0.2;	
+	var d2 = -0.4;
+	var p8 = [[1,0,11.35],[1,0,11.6], 
+		[1.8,0,12.8], [2,0,13.3]];
+	var k8 = [0,0,0,1,2,2,2];
+	var c8 = NUBS(S0)(2)(k8)(p8);
+	var m8 = ROTATIONAL_SURFACE(c8);
+	var s8 = MAP(m8)(domain2);	
+
+	var p9 = [[2,0,13.3], [1.8,0,13.35+x], 
+		[1.5,0,13.4+x], [1,0,13.45+x], [0.5,0,13.5+x]];
+	var k9 = [0,0,0,1,2,3,3,3];
+	var c9 = NUBS(S0)(2)(k9)(p9);
+	var m9 = ROTATIONAL_SURFACE(c9);
+	var s9 = MAP(m9)(domain2);	
+
+
+	var p10 = [[0.5,0,13.5+x], [0.6,0,13.5+x], [0.6,0,14+x], [0.4,0,14+x], [0,0,14+x]];
+	var k10 = [0,0,0,1,2,3,3,3];
+	var c10 = NUBS(S0)(2)(k10)(p10);
+	var m10 = ROTATIONAL_SURFACE(c10);
+	var s10 = MAP(m10)(domain2);
+
+
+	var width = 0.5; 	// thickness = width
+	var depth = width*3;
+	var half_crown1 = CUBOID([width,width,depth]);
+	var half_crown2 = TRANSLATE([0,2])([-width,depth-width])( ROTATE([0,2])([PI/2])(half_crown1) );
+	var cross = STRUCT([half_crown1, half_crown2]);
+	cross = T([0,1,2])([-width/2,-width/2,15.6])(cross);
+	king.push(cross);
+
+	var sTrans = T([2])([1.4])(STRUCT([s4,s5,s6,s7,s8,s9,s10]));
+	king.push(sTrans);
+
+
+	var sphereSurface = function (r, n) {  
+	  var domain = DOMAIN([[0,PI], [0,2*PI]])([n,n*2]);
+	  var mapping = function (p) {
+	    var u = p[0];
+	    var v = p[1];
+	    return [
+	      r * SIN(u) * COS(v),
+	      r * SIN(u) * SIN(v),
+	      r * COS(u)
+	    ];
+	  };
+	  return MAP(mapping)(domain);
+	};
+
+	var sphere = sphereSurface(0.2,20);
+	king.push(T([2])([17.3])(sphere));
+
+	var b = [[5+r,0,0],[0+r,0,0]];
+	var cb = BEZIER(S0)(b);
+	var mb = ROTATIONAL_SURFACE(cb);
+	var sb = MAP(mb)(domain2);	
+	king.push(sb);
+
+	// EXPORT THE MODEL
+	var struct1 = STRUCT(king,cross);
+	struct1 = S([0,1,2])([0.15,0.15,0.15])(struct1);
+	exports.king = T([2])([1])(struct1);
+
+}(this));
+
+
+!(function (exports){
+var sphereSurface = function (r) {  
+	  var domain = DOMAIN([[0,PI], [0,2*PI]])([r*25,r*25*2]);
 	  var mapping = function (p) {
 		var u = p[0];
 		var v = p[1];
@@ -63,7 +192,7 @@
 	// Marrone pastello 152,118,84
 	var COLMP = COLOR([152/255,118/255,84/255]);
 	// Risoluzione di rotazione
-	var resRot = 30;
+	var resRot = 25;
 
 	// muoviamo punti asse X
 	var puntiAsseXZ = basicControlPoints.map(function(ptlist) {return ruotaPunti(ptlist,PI/2,0);});
@@ -204,7 +333,7 @@
 		var raggio = 0.4;
 
 		TORRE.scale([0,1,2],[(raggio/2),(raggio/2),(altezza/5.3)]);
-		TORRE.color([255/255,235/255,190/255]);
+		//TORRE.color([255/255,235/255,190/255]);
 
 		TORRE = T([2])([1])(TORRE);
 		exports.rook = TORRE;
@@ -215,7 +344,7 @@
 var points = [[10,0,0],[6,2,0],[4.2,5,0],[4,8,0],[5,11,0],[7,14,0],[9,16,0],[11,17,0],[12,18,0],[13,19,0],[12,20,0],[9,21,0],[6,23,0],[5,25,0],[5,28,0],[7,29,0],[9,29.5,0],[13,29.5,0],[17,29.5,0],[18,32,0],[21,30,0],[23,27,0],[23,22,0],[22,18,0],[20.5,12,0],[21,8,0],[22,4,0],[23,1,0],[21,0,0],[10,0,0]];
 var knots = [0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,28,28];
 var profileBody = NUBS(S0)(2)(knots)(points);
-var dom = DOMAIN([[0,1],[0,1],[0,1]])([80,1,1]);
+var dom = DOMAIN([[0,1],[0,1],[0,1]])([50,1,1]);
 var fakeBody = BEZIER(S0)([[18,25,0]]);
 var bodySurface = BEZIER(S1)([profileBody, fakeBody]);
 
@@ -233,7 +362,7 @@ var cres = NUBS(S0)(2)(knots2)(crestaPoints);
 var fakeCRES = BEZIER(S0)([[23,27 + 1,0]]);
 var cresta = BEZIER(S1)([cres,fakeCRES]);
 
-var dom2d = DOMAIN([[0,1],[0,1]])([80,1]);
+var dom2d = DOMAIN([[0,1],[0,1]])([50,1]);
 var fakeCRES2 = BEZIER(S0)([[23,27 + 1,3]]);
 var crestaPoints2 = crestaPoints.map(function(n){return [n[0],n[1],n[2]+3]});
 var cres2 = NUBS(S0)(2)(knots2)(crestaPoints2);
@@ -251,7 +380,7 @@ var baseProfile = NUBS(S0)(2)(knotsBase)(basePoints);
 var base = ROTATIONAL_SURFACE(baseProfile);
 var baseDis = R([1,2])([PI/2])(MAP(base)(basedom));
 var chessHorse = STRUCT([baseDis, finalHorse]);
-var scmodel = R([1,2])([PI/2])(COLOR([139/255,69/255,19/255,1])(chessHorse));
+var scmodel = R([1,2])([PI/2])(chessHorse);
 var scmodel = S([0,1,2])([0.065,0.065,0.065])(scmodel);
 scmodel = T([2])([1])(scmodel);
 exports.knight = scmodel;
@@ -264,7 +393,7 @@ exports.knight = scmodel;
 
 !(function (exports){
 	var queen = [];	
-	var domain2 = DOMAIN([[0,1],[0,2*PI]])([40,70]);
+	var domain2 = DOMAIN([[0,1],[0,2*PI]])([20,35]);
 
 	var r = -1.3;
 	var p0 = [[5+r,0,0], [5.2+r,0,0], [5.2+r,0,0.5], [4.4+r,0,0.6]];
@@ -370,7 +499,7 @@ exports.knight = scmodel;
 	queen.push(sb);
 
 	// EXPORT THE MODEL
-	var struct1 = COLOR([152/255,118/255,84/255])(STRUCT(queen));
+	var struct1 = STRUCT(queen);
 	struct1 = S([0,1,2])([0.15,0.15,0.15])(struct1);
 	struct1 = T([2])([1])(struct1);
 	exports.queenPiece = struct1;
@@ -378,63 +507,54 @@ exports.knight = scmodel;
 }(this));
 
  !(function (exports){
-// BISHOP
-
-// dominio rotazione
-var domain = DOMAIN([[0,1],[0,2*PI]])([50,50]);
-var littleDomain = DOMAIN([[0,1],[0,2*PI]])([1,50]);
-var detailedDomain = DOMAIN([[0,1],[0,2*PI]])([60,60]);
+var domain = DOMAIN([[0,1],[0,2*PI]])([40,40]);
+var littleDomain = DOMAIN([[0,1],[0,2*PI]])([1,40]);
+var detailedDomain = DOMAIN([[0,1],[0,2*PI]])([50,50]);
 
 // base
-var ctrlPoints = [[2.3,0,0],[2.3,0,0.4]];
+var ctrlPoints = [[1.15,0,0],[1.15,0,0.2]];
 var profile = BEZIER(S0)(ctrlPoints);
 var mapping = ROTATIONAL_SURFACE(profile);
 var base = MAP(mapping)(domain);
 
-// bottom
-var ctrlPoints = [[0,0,0],[2.3,0,0]];
-var profile = BEZIER(S0)(ctrlPoints);
-var mapping = ROTATIONAL_SURFACE(profile);
-var bottom = MAP(mapping)(littleDomain);
-
 // part01
-ctrlPoints = [[2.3,0,0.4],[2.1,0,0.6]];
+ctrlPoints = [[1.15,0,0.2],[1.05,0,0.3]];
 profile = BEZIER(S0)(ctrlPoints);
 mapping = ROTATIONAL_SURFACE(profile);
 var part01 = MAP(mapping)(littleDomain);
 
 // part02
-ctrlPoints = [[2.1,0,0.6],[2.7,0,1],[1.5,0,1.4],[1.5,0,2.4]];
+ctrlPoints = [[1.05,0,0.3],[1.35,0,0.5],[0.75,0,0.7],[0.75,0,1.2]];
 profile = BEZIER(S0)(ctrlPoints);
 mapping = ROTATIONAL_SURFACE(profile);
 var part02 = MAP(mapping)(domain);
 
 // part03
-ctrlPoints = [[1.5,0,2.4],[1.3,0,2.6]];
+ctrlPoints = [[0.75,0,1.2],[0.65,0,1.3]];
 profile = BEZIER(S0)(ctrlPoints);
 mapping = ROTATIONAL_SURFACE(profile);
 var part03 = MAP(mapping)(littleDomain);
 
 // part04
-ctrlPoints = [[1.3,0,2.6],[0.9,0,3.5],[0.8,0,5.2]];
+ctrlPoints = [[0.65,0,1.3],[0.45,0,1.75],[0.4,0,2.6]];
 profile = BEZIER(S0)(ctrlPoints);
 mapping = ROTATIONAL_SURFACE(profile);
 var part04 = MAP(mapping)(domain);
 
 // part05
-ctrlPoints = [[0.8,0,5.2],[1.5,0,5.2],[1.5,0,5.2],[1.7,0,6],[1.1,0,6]];
+ctrlPoints = [[0.4,0,2.6],[0.75,0,2.6],[0.75,0,2.6],[0.85,0,3],[0.55,0,3]];
 profile = BEZIER(S0)(ctrlPoints);
 mapping = ROTATIONAL_SURFACE(profile);
 var part05 = MAP(mapping)(domain);
 
 // part06
-ctrlPoints = [[1.1,0,6],[1.1,0,6.25],[1.1,0,6.25],[0.9,0,6.4],[0.6,0,6.4],[1.35,0,6.4],[1,0,6.7]];
+ctrlPoints = [[0.55,0,3],[0.55,0,3.125],[0.55,0,3.125],[0.45,0,3.2],[0.3,0,3.2],[0.675,0,3.2],[0.5,0,3.35]];
 profile = BEZIER(S0)(ctrlPoints);
 mapping = ROTATIONAL_SURFACE(profile);
 var part06 = MAP(mapping)(domain);
 
 // part07 con "taglio"
-ctrlPoints = [[1,0,6.7],[1.9,0,7.7],[0.5,0,8.7],[0.4,0,9.5]];
+ctrlPoints = [[0.5,0,3.35],[0.95,0,3.85],[0.25,0,4.35],[0.2,0,4.75]];
 profile = BEZIER(S0)(ctrlPoints);
 mapping = ROTATIONAL_SURFACE(profile);
 var part07 = MAP(mapping)(detailedDomain);
@@ -445,19 +565,19 @@ var cut = function (p) {
 	var y = p[1];
 	var z = p[2];
 
-	if ( x>0 && x<0.85 && z>(1.2+6.7) && z<(2.4+6.7)){
-		if (z<=(8.1-x))
+	if ( x>0 && x<0.425 && z>(3.95) && z<(4.55)){
+		if (z<=(4.05-x))
 			return p;
-		else if ((x+1+6.7)>=z)
+		else if ((x+3.85)>=z)
 			return p;
-		else if ((x+1.4+6.7)<=z)
+		else if ((x+4.05)<=z)
 			return p;
-		else if ((x+1.2+6.7)>=z && x>=0.2)
-			return [0.2,y,1.2+6.7];
-		else if ((x+1.2+6.7)<z && z>=1.4+6.7)
-			return [0,y,1.4+6.7];
+		else if ((x+3.95)>=z && x>=0.1)
+			return [0.1,y,3.95];
+		else if ((x+3.95)<z && z>=4.05)
+			return [0,y,4.05];
 		else
-			return [z-1.4-6.7,y,x+1+6.7];
+			return [z-4.05,y,x+3.85];
 	}
 
 	return p;
@@ -467,14 +587,14 @@ var cut = function (p) {
 part07 = MAP(cut)(part07);
 
 // part08
-ctrlPoints = [[0.4,0,9.5],[0.7,0,9.7],[0.65,0,10.15],[0,0,10.18]];
+ctrlPoints = [[0.2,0,4.75],[0.35,0,4.75],[0.325,0,5.075],[0,0,5.09]];
 profile = BEZIER(S0)(ctrlPoints);
 mapping = ROTATIONAL_SURFACE(profile);
 var part08 = MAP(mapping)(domain);
 
-var scmodel = STRUCT([base,bottom,part01,part02,part03,part04,part05,part06,part07,part08]);
-scmodel = COLOR([128/255,128/255,128/255])(scmodel);
-scmodel = S([0,1,2])([0.2,0.2,0.2])(scmodel);
+var scmodel = STRUCT([base,part01,part02,part03,part04,part05,part06,part07,part08]);
+//scmodel = COLOR([128/255,128/255,128/255])(scmodel);
+scmodel = S([0,1,2])([0.35,0.35,0.35])(scmodel);
 scmodel = T([2])([1])(scmodel);
 exports.bishop = scmodel;
 }(this));
@@ -536,7 +656,7 @@ exports.bishop = scmodel;
 
 
 	function createIvoryBorder() {
-		var domain = DOMAIN([[0,1],[0,1]])([100,1]);
+		var domain = DOMAIN([[0,1],[0,1]])([50,1]);
 
   	var knots = [0,0,0,1,2,3,4,5,6,7,8,9,10,11,11,11];
 
@@ -583,17 +703,17 @@ exports.bishop = scmodel;
 		black.push(insertPiecein(-3,2,pawn));
 		black.push(insertPiecein(-3,3,pawn));*/
 		//black.push(insertPiecein(0,7,rook));
-		black.push(insertPiecein(2.5,6.5,rook));
-		black.push(insertPiecein(4.5,4.5,knight));
+		//black.push(insertPiecein(2.5,6.5,rook));
+		//black.push(insertPiecein(4.5,4.5,knight));
 		//black.push(insertPiecein(-3,4,knight));
 		//black.push(insertPiecein(7,2,bishop));
 		black.push(insertPiecein(1.5,3.5,bishop));
-		//black.push(insertPiecein(5,7,CUBOID([0.8,0.8,2])));
+		black.push(insertPiecein(4.5,6.5,king));
 		black.push(insertPiecein(2.5,4.5,queenPiece));
 		var blackPieces = COLOR([0.1,0.1,0.1])(STRUCT(black));
 
 		var white = [];
-		white.push(insertPiecein(0.5,0.5,pawn));
+		//white.push(insertPiecein(0.5,0.5,pawn));
 
 		/*white.push(insertPiecein(2,1,pawn));
 		white.push(insertPiecein(7,1,pawn));
@@ -606,10 +726,10 @@ exports.bishop = scmodel;
 		white.push(insertPiecein(4.5,0.5,rook));
 		white.push(insertPiecein(4.5,1.5,knight));
 		//white.push(insertPiecein(-2,6,knight));
-		white.push(insertPiecein(3.5,2.5,bishop));
+		//white.push(insertPiecein(3.5,2.5,bishop));
 		//white.push(insertPiecein(4,4,bishop));
-		//white.push(insertPiecein(5,0,CUBOID([0.8,0.8,2])));
-		white.push(insertPiecein(0.5,2.5,queenPiece));
+		white.push(insertPiecein(5.5,0.5,king));
+		//white.push(insertPiecein(0.5,2.5,queenPiece));
 
 	var whitePieces = COLOR([0.99,0.99,0.99])(STRUCT(white));
 
@@ -619,63 +739,3 @@ exports.bishop = scmodel;
 	var ext_borders = drawIvory();
 	exports.scmodel = STRUCT([squares,int_borders,ext_borders,blackPieces,whitePieces]);
 }(this));
-
-
-/*
-	function insertPiecein(row,column,model){
-
-		if(row<0||row>8) {movedPiece = T([0,1])([row,column])(model);}
-		else {movedPiece = T([0,1])([row,column])(model);}
-		return movedPiece;
-
-	}
-
-!(function (exports){
-		var white = [];
-		white.push(insertPiecein(0,1,pawn));
-		white.push(insertPiecein(2,1,pawn));
-		white.push(insertPiecein(7,1,pawn));
-		/*white.push(insertPiecein(-2,1,pawn));
-		white.push(insertPiecein(-2,2,pawn));
-		white.push(insertPiecein(-2,3,pawn));
-		white.push(insertPiecein(-2,4,pawn));
-		white.push(insertPiecein(-2,5,pawn));
-		white.push(insertPiecein(0,0,rook));
-		white.push(insertPiecein(4,0,rook));
-		white.push(insertPiecein(4,1,knight));
-		//white.push(insertPiecein(-2,6,knight));
-		white.push(insertPiecein(3,2,bishop));
-		white.push(insertPiecein(4,4,bishop));
-		white.push(insertPiecein(5,0,CUBOID([0.8,0.8,2])));
-		white.push(insertPiecein(2,2,queenPiece));
-
-	exports.whitePieces = COLOR([0.99,0.99,0.99])(STRUCT(white));
-
-	
-
-}(this));
-
-!(function (exports){
-		var black = [];
-		black.push(insertPiecein(7,6,pawn));
-		black.push(insertPiecein(6,6,pawn));
-		black.push(insertPiecein(5,6,pawn));
-		black.push(insertPiecein(1,6,pawn));
-		black.push(insertPiecein(0,6,pawn));
-		black.push(insertPiecein(-3,1,pawn));
-		black.push(insertPiecein(-3,2,pawn));
-		black.push(insertPiecein(-3,3,pawn));
-		black.push(insertPiecein(0,7,rook));
-		black.push(insertPiecein(3,7,rook));
-		black.push(insertPiecein(5,5,knight));
-		//black.push(insertPiecein(-3,4,knight));
-		black.push(insertPiecein(7,2,bishop));
-		black.push(insertPiecein(2,4,bishop));
-		black.push(insertPiecein(5,7,CUBOID([0.8,0.8,2])));
-		//black.push(insertPiecein(-3,5,queenPiece));
-		
-		exports.blackPieces = COLOR([0.1,0.1,0.1])(STRUCT(black));
-	}(this));*/
-	
-	//scmodel = STRUCT([scmodel,whitePieces,blackPieces]);
-
