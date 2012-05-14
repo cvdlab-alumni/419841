@@ -474,7 +474,7 @@ var part08 = MAP(mapping)(domain);
 
 var scmodel = STRUCT([base,bottom,part01,part02,part03,part04,part05,part06,part07,part08]);
 scmodel = COLOR([128/255,128/255,128/255])(scmodel);
-scmodel = S([0,1,2])([0.15,0.15,0.15])(scmodel);
+scmodel = S([0,1,2])([0.2,0.2,0.2])(scmodel);
 scmodel = T([2])([1])(scmodel);
 exports.bishop = scmodel;
 }(this));
@@ -576,39 +576,39 @@ exports.bishop = scmodel;
 
 	var black = [];
 		black.push(insertPiecein(7,6,pawn));
-		black.push(insertPiecein(6,6,pawn));
+		/*black.push(insertPiecein(6,6,pawn));
 		black.push(insertPiecein(5,6,pawn));
 		black.push(insertPiecein(1,6,pawn));
 		black.push(insertPiecein(0,6,pawn));
-		/*black.push(insertPiecein(-3,1,pawn));
+		black.push(insertPiecein(-3,1,pawn));
 		black.push(insertPiecein(-3,2,pawn));
 		black.push(insertPiecein(-3,3,pawn));*/
-		black.push(insertPiecein(0,7,rook));
+		//black.push(insertPiecein(0,7,rook));
 		black.push(insertPiecein(3,7,rook));
 		black.push(insertPiecein(5,5,knight));
 		//black.push(insertPiecein(-3,4,knight));
-		black.push(insertPiecein(7,2,bishop));
+		//black.push(insertPiecein(7,2,bishop));
 		black.push(insertPiecein(2,4,bishop));
-		black.push(insertPiecein(5,7,CUBOID([0.8,0.8,2])));
-		//black.push(insertPiecein(-3,5,queenPiece));
+		//black.push(insertPiecein(5,7,CUBOID([0.8,0.8,2])));
+		black.push(insertPiecein(3,5,queenPiece));
 		var blackPieces = COLOR([0.1,0.1,0.1])(STRUCT(black));
 
 		var white = [];
-		white.push(insertPiecein(0,1,pawn));
+		/*white.push(insertPiecein(0,1,pawn));
 		white.push(insertPiecein(2,1,pawn));
 		white.push(insertPiecein(7,1,pawn));
-		/*white.push(insertPiecein(-2,1,pawn));
+		white.push(insertPiecein(-2,1,pawn));
 		white.push(insertPiecein(-2,2,pawn));
 		white.push(insertPiecein(-2,3,pawn));
 		white.push(insertPiecein(-2,4,pawn));
 		white.push(insertPiecein(-2,5,pawn));*/
-		white.push(insertPiecein(0,0,rook));
+		//white.push(insertPiecein(0,0,rook));
 		white.push(insertPiecein(4,0,rook));
 		white.push(insertPiecein(4,1,knight));
 		//white.push(insertPiecein(-2,6,knight));
 		white.push(insertPiecein(3,2,bishop));
-		white.push(insertPiecein(4,4,bishop));
-		white.push(insertPiecein(5,0,CUBOID([0.8,0.8,2])));
+		//white.push(insertPiecein(4,4,bishop));
+		//white.push(insertPiecein(5,0,CUBOID([0.8,0.8,2])));
 		white.push(insertPiecein(2,2,queenPiece));
 
 	var whitePieces = COLOR([0.99,0.99,0.99])(STRUCT(white));
