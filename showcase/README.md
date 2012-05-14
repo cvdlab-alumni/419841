@@ -1,4 +1,4 @@
-Chessboard with pieces
+Chessboard with 12 pieces (10 inside, 2 outside)
 
 
 Contributors:
