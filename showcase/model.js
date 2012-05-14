@@ -1,3 +1,15 @@
+/*
+@Authors:
+- Luca Menichetti
+- Francesco Furiani
+- Dario Pasquantonio
+- Marco Ungania
+- Andrea Somma
+- Fabrizio Rebecca
+- Alessio Conte
+- Luca Nardini
+*/
+
 !(function (exports){
 	var king = [];	
 	var domain2 = DOMAIN([[0,1],[0,2*PI]])([20,35]);
@@ -215,7 +227,7 @@ var sphereSurface = function (r) {
 	var sphereTop = T([2])([6.55+0.5])(sphereSurface(1,10));
 	// DRAW(COLMP(sphereTop));
 	var pawn = COLMP( STRUCT([structSuperfici,sphereTop]) );
-	pawn = S([0,1,2])([0.15,0.15,0.15])(pawn);
+	pawn = S([0,1,2])([0.2,0.2,0.2])(pawn);
 	pawn = T([2])([1])(pawn);
 	exports.pawn = pawn;
 	
@@ -332,7 +344,7 @@ var sphereSurface = function (r) {
 		var altezza = 2;
 		var raggio = 0.4;
 
-		TORRE.scale([0,1,2],[(raggio/2),(raggio/2),(altezza/5.3)]);
+		TORRE.scale([0,1,2],[(raggio/2.2),(raggio/2.2),(altezza/5.5)]);
 		//TORRE.color([255/255,235/255,190/255]);
 
 		TORRE = T([2])([1])(TORRE);
@@ -381,15 +393,10 @@ var base = ROTATIONAL_SURFACE(baseProfile);
 var baseDis = R([1,2])([PI/2])(MAP(base)(basedom));
 var chessHorse = STRUCT([baseDis, finalHorse]);
 var scmodel = R([1,2])([PI/2])(chessHorse);
-var scmodel = S([0,1,2])([0.065,0.065,0.065])(scmodel);
+var scmodel = S([0,1,2])([0.06,0.06,0.06])(scmodel);
 scmodel = T([2])([1])(scmodel);
 exports.knight = scmodel;
 }(this));
-/**
- * @author Rebecca Fabrizio
- * 
- * Drawing a chess queen
- */
 
 !(function (exports){
 	var queen = [];	
@@ -594,7 +601,7 @@ var part08 = MAP(mapping)(domain);
 
 var scmodel = STRUCT([base,part01,part02,part03,part04,part05,part06,part07,part08]);
 //scmodel = COLOR([128/255,128/255,128/255])(scmodel);
-scmodel = S([0,1,2])([0.35,0.35,0.35])(scmodel);
+scmodel = S([0,1,2])([0.4,0.4,0.4])(scmodel);
 scmodel = T([2])([1])(scmodel);
 exports.bishop = scmodel;
 }(this));
@@ -656,7 +663,7 @@ exports.bishop = scmodel;
 
 
 	function createIvoryBorder() {
-		var domain = DOMAIN([[0,1],[0,1]])([50,1]);
+		var domain = DOMAIN([[0,1],[0,1]])([70,1]);
 
   	var knots = [0,0,0,1,2,3,4,5,6,7,8,9,10,11,11,11];
 
@@ -687,47 +694,47 @@ exports.bishop = scmodel;
 	}
 
 		function insertPiecein(row,column,model){
-
-		return movedPiece = T([0,1])([row,column])(model);
+			if(row>8||row<0) return movedPiece = T([0,1,2])([row,column,-1])(model);
+			else return movedPiece = T([0,1])([row,column])(model);
 		
 
 	}
 
 	var black = [];
 		black.push(insertPiecein(6.5,5.5,pawn));
-		/*black.push(insertPiecein(6,6,pawn));
-		black.push(insertPiecein(5,6,pawn));
-		black.push(insertPiecein(1,6,pawn));
-		black.push(insertPiecein(0,6,pawn));
-		black.push(insertPiecein(-3,1,pawn));
-		black.push(insertPiecein(-3,2,pawn));
-		black.push(insertPiecein(-3,3,pawn));*/
-		//black.push(insertPiecein(0,7,rook));
+		/*black.push(insertPiecein(6.5,6.5,pawn));
+		black.push(insertPiecein(5.5,6.5,pawn));
+		black.push(insertPiecein(1.5,6.5,pawn));
+		black.push(insertPiecein(0.5,6.5,pawn));
+		black.push(insertPiecein(-3.5,1.5,pawn));
+		black.push(insertPiecein(-3.5,2.5,pawn));
+		black.push(insertPiecein(-3.5,3.5,pawn));*/
+		black.push(insertPiecein(0.5,7.5,rook));
 		//black.push(insertPiecein(2.5,6.5,rook));
 		//black.push(insertPiecein(4.5,4.5,knight));
-		//black.push(insertPiecein(-3,4,knight));
-		//black.push(insertPiecein(7,2,bishop));
+		//black.push(insertPiecein(-3.5,4.5,knight));
+		//black.push(insertPiecein(7.5,2.5,bishop));
 		black.push(insertPiecein(1.5,3.5,bishop));
 		black.push(insertPiecein(4.5,6.5,king));
 		black.push(insertPiecein(2.5,4.5,queenPiece));
 		var blackPieces = COLOR([0.1,0.1,0.1])(STRUCT(black));
 
 		var white = [];
-		//white.push(insertPiecein(0.5,0.5,pawn));
+		white.push(insertPiecein(0.5,0.5,pawn));
 
-		/*white.push(insertPiecein(2,1,pawn));
-		white.push(insertPiecein(7,1,pawn));
-		white.push(insertPiecein(-2,1,pawn));
-		white.push(insertPiecein(-2,2,pawn));
-		white.push(insertPiecein(-2,3,pawn));
-		white.push(insertPiecein(-2,4,pawn));
-		white.push(insertPiecein(-2,5,pawn));*/
-		//white.push(insertPiecein(0,0,rook));
+		/*white.push(insertPiecein(2.5,1.5,pawn));
+		white.push(insertPiecein(7.5,1.5,pawn));
+		white.push(insertPiecein(-2.5,1.5,pawn));
+		white.push(insertPiecein(-2.5,2.5,pawn));
+		white.push(insertPiecein(-2.5,3.5,pawn));
+		white.push(insertPiecein(-2.5,4.5,pawn));*/
+		white.push(insertPiecein(-2.5,5.5,pawn));
+		//white.push(insertPiecein(0.5,0.5,rook));
 		white.push(insertPiecein(4.5,0.5,rook));
-		white.push(insertPiecein(4.5,1.5,knight));
-		//white.push(insertPiecein(-2,6,knight));
-		//white.push(insertPiecein(3.5,2.5,bishop));
-		//white.push(insertPiecein(4,4,bishop));
+		//white.push(insertPiecein(4.5,1.5,knight));
+		white.push(insertPiecein(-2.5,6.5,knight));
+		white.push(insertPiecein(3.5,2.5,bishop));
+		//white.push(insertPiecein(4.5,4.5,bishop));
 		white.push(insertPiecein(5.5,0.5,king));
 		//white.push(insertPiecein(0.5,2.5,queenPiece));
 
