@@ -593,8 +593,9 @@ exports.bishop = scmodel;
 		var blackPieces = COLOR([0.1,0.1,0.1])(STRUCT(black));
 
 		var white = [];
-		/*white.push(insertPiecein(0,1,pawn));
-		white.push(insertPiecein(2,1,pawn));
+		white.push(insertPiecein(0.5,0.5,pawn));
+
+		/*white.push(insertPiecein(2,1,pawn));
 		white.push(insertPiecein(7,1,pawn));
 		white.push(insertPiecein(-2,1,pawn));
 		white.push(insertPiecein(-2,2,pawn));
