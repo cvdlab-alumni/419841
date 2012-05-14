@@ -1,4 +1,4 @@
-/*!(function (exports){
+!(function (exports){
 	var sphereSurface = function (r) {  
 	  var domain = DOMAIN([[0,PI], [0,2*PI]])([r*30,r*30*2]);
 	  var mapping = function (p) {
@@ -85,17 +85,133 @@
 	// Sfera sopra
 	var sphereTop = T([2])([6.55+0.5])(sphereSurface(1,10));
 	// DRAW(COLMP(sphereTop));
+	var pawn = COLMP( STRUCT([structSuperfici,sphereTop]) );
+	pawn = S([0,1,2])([0.15,0.15,0.15])(pawn);
+	pawn = T([2])([1])(pawn);
+	exports.pawn = pawn;
+	
+}(this));
 
-	exports.pawn = COLMP( STRUCT([structSuperfici,sphereTop]) );
-}(this));*/
 
-/**
- * @author Andrea Somma
- * 
- * Chess
- */
 
- !(function(exports){
+
+!(function (exports,circleSegments,heightHRSegments,heightLRSegments){ //i parametri servono per impostare manualmente il numero di segmenti, altrimenti vengono presi valori di default
+
+		circleSegments = circleSegments || 60;
+		heightLRSegments = heightLRSegments || 10;
+		heightHRSegments = heightHRSegments || 40;
+
+		var mkCilinder = function(r,h,n){
+			var domain = DOMAIN([[0,1],[0,2*PI],[0,1]])([1,n,1]);
+
+			var mapping = function(p){
+				var dr = p[0];
+				var alfa = p[1];
+				var dh = p[2];
+
+				return [r*dr*COS(alfa),r*dr*SIN(alfa),h*dh];
+			}
+
+			return MAP(mapping)(domain);
+
+		}
+
+		var mkCoronaCircolare = function(r1,r2,h,n){
+			var domain = DOMAIN([[r1,r2],[0,2*PI],[0,1]])([1,2*n,1]);
+
+			var mapping = function(p){
+				var r = p[0];
+				var alfa = p[1];
+				var dh = p[2];
+
+				return [r*COS(alfa),r*SIN(alfa),h*dh];
+			}
+
+			return MAP(mapping)(domain);
+		}
+
+		var mkPartOfCoronaCircolare = function(r1,r2,h,alfa1,alfa2,n){
+			var domain = DOMAIN([[r1,r2],[alfa1,alfa2],[0,1]])([1,n,1]);
+
+			var mapping = function(p){
+				var r = p[0];
+				var alfa = p[1];
+				var dh = p[2];
+
+				return [r*COS(alfa),r*SIN(alfa),h*dh];
+			}
+
+			return MAP(mapping)(domain);
+		}
+
+
+		var baseTorre = mkCilinder(2,0.3,circleSegments);
+
+		var rigonfiamentoBasso = CUBIC_HERMITE(S0)([[1.9,0,0.3],[1.8,0,1],[0.5,0,0.5],[-0.8,0,0.5]]); //p0 p1 t0 t1
+		var raccordoRigonfiamento = CUBIC_HERMITE(S0)([[1.8,0,1],[1.5,0,1.5],[-0.8,0,0.5],[0,0,0.3]]); //p0 p1 t0 t1
+		var scalino = CUBIC_HERMITE(S0)([[1.5,0,1.5],[1.4,0,1.6],[0,0,0.3],[-0.15,0,0.3]]); //p0 p1 t0 t1
+		var corpo = CUBIC_HERMITE(S0)([[1.4,0,1.6],[1.2,0,3.8],[-0.3,0,0.5],[0,0,2.5]],40); //p0 p1 t0 t1
+		var scalinoAlto = CUBIC_HERMITE(S0)([[1.2,0,3.8],[1.4,0,3.9],[0,0,0.3],[0.1,0,0.3]]); //p0 p1 t0 t1
+		var collo = CUBIC_HERMITE(S0)([[1.4,0,3.9],[1.65,0,4.25],[0.1,0,0.3],[0.4,0,0.1]]); //p0 p1 t0 t1
+		var coronaBassa = CUBIC_HERMITE(S0)([[1.65,0,4.25],[1.65,0,4.37],[0.2,0,0],[-0.2,0,0]]); //p0 p1 t0 t1
+		var scanalatura = CUBIC_HERMITE(S0)([[1.65,0,4.37],[1.65,0,4.4],[-0.2,0,0],[0.2,0,0]]); //p0 p1 t0 t1
+		var coronaMedia = CUBIC_HERMITE(S0)([[1.65,0,4.4],[1.7,0,4.7],[0.2,0,0],[0,0,0.5]]); //p0 p1 t0 t1
+
+
+		var profiloLOWRes = [scalino,scalinoAlto,collo,coronaBassa,scanalatura,coronaMedia];
+
+		var profiloHIGHRes = [rigonfiamentoBasso,raccordoRigonfiamento,corpo];
+
+		var getSurf = function(curva,n1,n2){
+			var domain = DOMAIN([[0,1],[0,2*PI]])([n1||10,n2||40]);
+			var mapping = ROTATIONAL_SURFACE(curva);
+			return MAP(mapping)(domain);
+		}
+
+		var getSurfLR = function(curva){
+			return getSurf(curva,heightLRSegments,circleSegments);
+		}
+		var getSurfHR = function(curva){
+			return getSurf(curva,heightHRSegments,circleSegments);
+		}
+
+
+		var torreLR = STRUCT(AA(getSurfLR)(profiloLOWRes));
+		var torreHR = STRUCT(AA(getSurfHR)(profiloHIGHRes));
+
+		var tappo = mkCilinder(1.7,0.1,circleSegments);
+		tappo.translate([2],[4.7]);
+
+		var coronaAlta = [];
+
+		var numDenti = 6;
+		var percVuoto = 0.2;
+
+		for(var i = 0; i<numDenti; i++){
+			var alfa1 = i*(2*PI/numDenti);
+			var alfa2 = alfa1+(((1-percVuoto)*2*PI)/numDenti);
+
+			var dente = mkPartOfCoronaCircolare(1.35,1.7,0.5,alfa1,alfa2,Math.round( (circleSegments*(1-percVuoto))/numDenti ) );
+			dente.translate([2],[4.8]);
+
+			coronaAlta.push(dente);
+		}
+
+
+		var TORRE = STRUCT([torreHR,torreLR,baseTorre,tappo,STRUCT(coronaAlta)]);
+
+		var altezza = 2;
+		var raggio = 0.4;
+
+		TORRE.scale([0,1,2],[(raggio/2),(raggio/2),(altezza/5.3)]);
+		TORRE.color([255/255,235/255,190/255]);
+
+		TORRE = T([2])([1])(TORRE);
+		exports.rook = TORRE;
+
+	}(this));
+
+!(function (exports){
 var points = [[10,0,0],[6,2,0],[4.2,5,0],[4,8,0],[5,11,0],[7,14,0],[9,16,0],[11,17,0],[12,18,0],[13,19,0],[12,20,0],[9,21,0],[6,23,0],[5,25,0],[5,28,0],[7,29,0],[9,29.5,0],[13,29.5,0],[17,29.5,0],[18,32,0],[21,30,0],[23,27,0],[23,22,0],[22,18,0],[20.5,12,0],[21,8,0],[22,4,0],[23,1,0],[21,0,0],[10,0,0]];
 var knots = [0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,28,28];
 var profileBody = NUBS(S0)(2)(knots)(points);
@@ -137,6 +253,7 @@ var baseDis = R([1,2])([PI/2])(MAP(base)(basedom));
 var chessHorse = STRUCT([baseDis, finalHorse]);
 var scmodel = R([1,2])([PI/2])(COLOR([139/255,69/255,19/255,1])(chessHorse));
 var scmodel = S([0,1,2])([0.065,0.065,0.065])(scmodel);
+scmodel = T([2])([1])(scmodel);
 exports.knight = scmodel;
 }(this));
 /**
@@ -254,7 +371,9 @@ exports.knight = scmodel;
 
 	// EXPORT THE MODEL
 	var struct1 = COLOR([152/255,118/255,84/255])(STRUCT(queen));
-	exports.queenPiece = S([0,1,2])([0.15,0.15,0.15])(struct1);
+	struct1 = S([0,1,2])([0.15,0.15,0.15])(struct1);
+	struct1 = T([2])([1])(struct1);
+	exports.queenPiece = struct1;
 
 }(this));
 
@@ -355,7 +474,9 @@ var part08 = MAP(mapping)(domain);
 
 var scmodel = STRUCT([base,bottom,part01,part02,part03,part04,part05,part06,part07,part08]);
 scmodel = COLOR([128/255,128/255,128/255])(scmodel);
-exports.bishop = S([0,1,2])([0.15,0.15,0.15])(scmodel);
+scmodel = S([0,1,2])([0.15,0.15,0.15])(scmodel);
+scmodel = T([2])([1])(scmodel);
+exports.bishop = scmodel;
 }(this));
 
 !(function (exports) {
@@ -445,65 +566,116 @@ exports.bishop = S([0,1,2])([0.15,0.15,0.15])(scmodel);
 		return ivory(sIvory);
 	}
 
-	function insertPiecein(row,column,model){
+		function insertPiecein(row,column,model){
 
-		if(row<0||row>8) {return movedPiece = T([0,1])([row+0.1,column+0.1])(model);}
-		else {return movedPiece = T([0,1,2])([row+0.1,column+0.1,1])(model);}
-
-	}
-
-	function drawWhitePieces() {
-		var pawn1 =  insertPiecein(0,1,CUBOID([0.8,0.8,2]));
-		var pawn2 =  insertPiecein(2,1,CUBOID([0.8,0.8,2]));
-		var pawn3 =  insertPiecein(7,1,CUBOID([0.8,0.8,2]));
-		var pawn4 =  insertPiecein(-2,1,CUBOID([0.8,0.8,2]));
-		var pawn5 =  insertPiecein(-2,2,CUBOID([0.8,0.8,2]));
-		var pawn6 =  insertPiecein(-2,3,CUBOID([0.8,0.8,2]));
-		var pawn7 =  insertPiecein(-2,4,CUBOID([0.8,0.8,2]));
-		var pawn8 =  insertPiecein(-2,5,CUBOID([0.8,0.8,2]));
-		var rook1 =  insertPiecein(0,0,CUBOID([0.8,0.8,2]));
-		var rook2 =  insertPiecein(4,0,CUBOID([0.8,0.8,2]));
-		var knight1 =  insertPiecein(4,1,knight);
-		var knight2 =  insertPiecein(-2,6,knight);
-		var bishop1 =  insertPiecein(3,2,bishop);
-		var bishop2 =  insertPiecein(4,4,bishop);
-		var king =  insertPiecein(5,0,CUBOID([0.8,0.8,2]));
-		var queen = insertPiecein(2,2,queenPiece);
-		return COLOR([0.99,0.99,0.99])(STRUCT([pawn1,pawn2,pawn3,pawn4,pawn5,pawn6,pawn7,pawn8,rook1,rook2,knight1,knight2,bishop1,bishop2,king,queen]));
-
+		if(row<0||row>8) {movedPiece = T([0,1])([row,column])(model);}
+		else {movedPiece = T([0,1])([row,column])(model);}
+		return movedPiece;
 
 	}
 
-	function drawBlackPieces() {
-		var pawn1 =  insertPiecein(7,6,CUBOID([0.8,0.8,2]));
-		var pawn2 =  insertPiecein(6,6,CUBOID([0.8,0.8,2]));
-		var pawn3 =  insertPiecein(5,6,CUBOID([0.8,0.8,2]));
-		var pawn4 =  insertPiecein(1,6,CUBOID([0.8,0.8,2]));
-		var pawn5 =  insertPiecein(0,6,CUBOID([0.8,0.8,2]));
-		var pawn6 =  insertPiecein(-3,1,CUBOID([0.8,0.8,2]));
-		var pawn7 =  insertPiecein(-3,2,CUBOID([0.8,0.8,2]));
-		var pawn8 =  insertPiecein(-3,3,CUBOID([0.8,0.8,2]));
-		var rook1 =  insertPiecein(0,7,CUBOID([0.8,0.8,2]));
-		var rook2 =  insertPiecein(3,7,CUBOID([0.8,0.8,2]));
-		var knight1 =  insertPiecein(5,5,knight);
-		var knight2 =  insertPiecein(-3,4,knight);
-		var bishop1 =  insertPiecein(7,2,bishop);
-		var bishop2 =  insertPiecein(2,4,bishop);
-		var king =  insertPiecein(5,7,CUBOID([0.8,0.8,2]));
-		var queen =  insertPiecein(-3,5,queenPiece);
-		return COLOR([0.1,0.1,0.1])(STRUCT([pawn1,pawn2,pawn3,pawn4,pawn5,pawn6,pawn7,pawn8,rook1,rook2,knight1,knight2,bishop1,bishop2,king,queen]));
-	}
+	var black = [];
+		black.push(insertPiecein(7,6,pawn));
+		black.push(insertPiecein(6,6,pawn));
+		black.push(insertPiecein(5,6,pawn));
+		black.push(insertPiecein(1,6,pawn));
+		black.push(insertPiecein(0,6,pawn));
+		/*black.push(insertPiecein(-3,1,pawn));
+		black.push(insertPiecein(-3,2,pawn));
+		black.push(insertPiecein(-3,3,pawn));*/
+		black.push(insertPiecein(0,7,rook));
+		black.push(insertPiecein(3,7,rook));
+		black.push(insertPiecein(5,5,knight));
+		//black.push(insertPiecein(-3,4,knight));
+		black.push(insertPiecein(7,2,bishop));
+		black.push(insertPiecein(2,4,bishop));
+		black.push(insertPiecein(5,7,CUBOID([0.8,0.8,2])));
+		//black.push(insertPiecein(-3,5,queenPiece));
+		var blackPieces = COLOR([0.1,0.1,0.1])(STRUCT(black));
 
-	function drawPieces(){
-		whitePieces = drawWhitePieces();
-		blackPieces = drawBlackPieces();
-		return STRUCT([whitePieces,blackPieces]);
+		var white = [];
+		white.push(insertPiecein(0,1,pawn));
+		white.push(insertPiecein(2,1,pawn));
+		white.push(insertPiecein(7,1,pawn));
+		/*white.push(insertPiecein(-2,1,pawn));
+		white.push(insertPiecein(-2,2,pawn));
+		white.push(insertPiecein(-2,3,pawn));
+		white.push(insertPiecein(-2,4,pawn));
+		white.push(insertPiecein(-2,5,pawn));*/
+		white.push(insertPiecein(0,0,rook));
+		white.push(insertPiecein(4,0,rook));
+		white.push(insertPiecein(4,1,knight));
+		//white.push(insertPiecein(-2,6,knight));
+		white.push(insertPiecein(3,2,bishop));
+		white.push(insertPiecein(4,4,bishop));
+		white.push(insertPiecein(5,0,CUBOID([0.8,0.8,2])));
+		white.push(insertPiecein(2,2,queenPiece));
 
-	}
+	var whitePieces = COLOR([0.99,0.99,0.99])(STRUCT(white));
+
 
 	var squares = drawSquares();
 	var int_borders = drawSquareBorder();
 	var ext_borders = drawIvory();
-	var pieces = drawPieces();
-	exports.scmodel = STRUCT([squares,int_borders,ext_borders,pieces]);
+	exports.scmodel = STRUCT([squares,int_borders,ext_borders,blackPieces,whitePieces]);
 }(this));
+
+
+/*
+	function insertPiecein(row,column,model){
+
+		if(row<0||row>8) {movedPiece = T([0,1])([row,column])(model);}
+		else {movedPiece = T([0,1])([row,column])(model);}
+		return movedPiece;
+
+	}
+
+!(function (exports){
+		var white = [];
+		white.push(insertPiecein(0,1,pawn));
+		white.push(insertPiecein(2,1,pawn));
+		white.push(insertPiecein(7,1,pawn));
+		/*white.push(insertPiecein(-2,1,pawn));
+		white.push(insertPiecein(-2,2,pawn));
+		white.push(insertPiecein(-2,3,pawn));
+		white.push(insertPiecein(-2,4,pawn));
+		white.push(insertPiecein(-2,5,pawn));
+		white.push(insertPiecein(0,0,rook));
+		white.push(insertPiecein(4,0,rook));
+		white.push(insertPiecein(4,1,knight));
+		//white.push(insertPiecein(-2,6,knight));
+		white.push(insertPiecein(3,2,bishop));
+		white.push(insertPiecein(4,4,bishop));
+		white.push(insertPiecein(5,0,CUBOID([0.8,0.8,2])));
+		white.push(insertPiecein(2,2,queenPiece));
+
+	exports.whitePieces = COLOR([0.99,0.99,0.99])(STRUCT(white));
+
+	
+
+}(this));
+
+!(function (exports){
+		var black = [];
+		black.push(insertPiecein(7,6,pawn));
+		black.push(insertPiecein(6,6,pawn));
+		black.push(insertPiecein(5,6,pawn));
+		black.push(insertPiecein(1,6,pawn));
+		black.push(insertPiecein(0,6,pawn));
+		black.push(insertPiecein(-3,1,pawn));
+		black.push(insertPiecein(-3,2,pawn));
+		black.push(insertPiecein(-3,3,pawn));
+		black.push(insertPiecein(0,7,rook));
+		black.push(insertPiecein(3,7,rook));
+		black.push(insertPiecein(5,5,knight));
+		//black.push(insertPiecein(-3,4,knight));
+		black.push(insertPiecein(7,2,bishop));
+		black.push(insertPiecein(2,4,bishop));
+		black.push(insertPiecein(5,7,CUBOID([0.8,0.8,2])));
+		//black.push(insertPiecein(-3,5,queenPiece));
+		
+		exports.blackPieces = COLOR([0.1,0.1,0.1])(STRUCT(black));
+	}(this));*/
+	
+	//scmodel = STRUCT([scmodel,whitePieces,blackPieces]);
+
