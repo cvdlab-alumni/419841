@@ -226,7 +226,7 @@ var sphereSurface = function (r) {
 	// Sfera sopra
 	var sphereTop = T([2])([6.55+0.5])(sphereSurface(1,10));
 	// DRAW(COLMP(sphereTop));
-	var pawn = COLMP( STRUCT([structSuperfici,sphereTop]) );
+	var pawn = STRUCT([structSuperfici,sphereTop] );
 	pawn = S([0,1,2])([0.2,0.2,0.2])(pawn);
 	pawn = T([2])([1])(pawn);
 	exports.pawn = pawn;
@@ -257,19 +257,19 @@ var sphereSurface = function (r) {
 
 		}
 
-		var mkCoronaCircolare = function(r1,r2,h,n){
-			var domain = DOMAIN([[r1,r2],[0,2*PI],[0,1]])([1,2*n,1]);
 
-			var mapping = function(p){
-				var r = p[0];
-				var alfa = p[1];
-				var dh = p[2];
+var traslaPunti = function (arr,x,y,z){
+	return arr.map(function(el){return [el[0]+x,el[1]+y,el[2]+z];});
+}
+var scalaPunti = function (arr,x,y,z){
+	return arr.map(function(el){return [el[0]*x,el[1]*y,el[2]*z];});
+}
 
-				return [r*COS(alfa),r*SIN(alfa),h*dh];
-			}
+var scaleAll = function (model,factor){
+	return S([0,1,2])([factor,factor,factor])(model);
+}
 
-			return MAP(mapping)(domain);
-		}
+
 
 		var mkPartOfCoronaCircolare = function(r1,r2,h,alfa1,alfa2,n){
 			var domain = DOMAIN([[r1,r2],[alfa1,alfa2],[0,1]])([1,n,1]);
@@ -303,17 +303,21 @@ var sphereSurface = function (r) {
 
 		var profiloHIGHRes = [rigonfiamentoBasso,raccordoRigonfiamento,corpo];
 
-		var getSurf = function(curva,n1,n2){
-			var domain = DOMAIN([[0,1],[0,2*PI]])([n1||10,n2||40]);
+
+		var domainHRes = DOMAIN([[0,1],[0,2*PI]])([heightHRSegments||10,circleSegments||40]);
+		var domainLRes = DOMAIN([[0,1],[0,2*PI]])([heightLRSegments||10,circleSegments||40]);
+
+
+		var getSurf = function(curva,domain){
 			var mapping = ROTATIONAL_SURFACE(curva);
 			return MAP(mapping)(domain);
 		}
 
 		var getSurfLR = function(curva){
-			return getSurf(curva,heightLRSegments,circleSegments);
+			return getSurf(curva,domainLRes);
 		}
 		var getSurfHR = function(curva){
-			return getSurf(curva,heightHRSegments,circleSegments);
+			return getSurf(curva,domainHRes);
 		}
 
 
@@ -711,7 +715,7 @@ exports.bishop = scmodel;
 		black.push(insertPiecein(-3.5,3.5,pawn));*/
 		black.push(insertPiecein(0.5,7.5,rook));
 		//black.push(insertPiecein(2.5,6.5,rook));
-		//black.push(insertPiecein(4.5,4.5,knight));
+		black.push(insertPiecein(4.5,4.5,knight));
 		//black.push(insertPiecein(-3.5,4.5,knight));
 		//black.push(insertPiecein(7.5,2.5,bishop));
 		black.push(insertPiecein(1.5,3.5,bishop));
