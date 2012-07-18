@@ -1,0 +1,9 @@
+//Filtra tutti i numeri positivi di un array e fa la somma
+
+function filtroSomma(array){
+	
+	var positivi = array.filter(array, function(item,index,array) {return item>0;});
+	return positivi.reduce(function(prev,current){return prev+current;});
+	
+	
+}

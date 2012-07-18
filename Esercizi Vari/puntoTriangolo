@@ -1,0 +1,66 @@
+function Punto(x,y){
+//se sono undefined valgono 0
+this.x = x || 0;
+this.y = y || 0; 
+}
+
+Punto.prototype.getDistance = function(punto){
+return Math.sqrt(Math.pow((this.x-punto.x),2) + Math.pow((this.y-punto.y),2));
+}
+
+Punto.prototype.translate = function(dx,dy){
+this.x+=dx;
+this.y+=dy;
+return this;
+}
+
+var random = Math.random;
+var round = Math.round;
+
+function randomPoint(){
+return new Punto(round(random()*200 - 100),round(random()*200-100));
+}
+
+function generaRandomArray(n){
+this.m = n || 100;
+var a = new Array();
+for (i = 0; i<m; ++i){
+a.push(randomPoint());
+}
+return a;
+}
+
+//generare funzione che prende semipiano positivi sopra bisettrice del primo e terzo quadrante e filtra tutti i punti
+
+function filtroSemipiano(array){
+return array.filter(function(item,index,array){item.y - item.x>=0;});
+}
+
+
+function Triangolo (v1,v2,v3){
+this.v1 = v1;
+this.v2 = v2;
+this.v3 = v3;
+}
+
+Triangolo.prototype.getPerimetro = function(){
+this.latoA = this.v1.getDistance(this.v2);
+this.latoB = this.v2.getDistance(this.v3);
+this.latoC = this.v1.getDistance(this.v3);
+return (this.latoA+this.latoB+this.latoC);
+}
+
+Triangolo.prototype.getArea = function(){
+p = this.getPerimetro();
+return Math.sqrt(p/2*(p/2 - this.latoA)*(p/2-this.latoB)*(p/2-this.latoC));
+}
+
+var p = new Punto(0,0);
+var p1 = new Punto(8,0);
+var p2 = new Punto(4,6);
+var d01 = p.getDistance(p1);
+var d02 = p.getDistance(p2);
+var d12 = p1.getDistance(p2);
+var t = new Triangolo(p,p1,p2);
+var perimetro = t.getPerimetro();
+var area = t.getArea();
