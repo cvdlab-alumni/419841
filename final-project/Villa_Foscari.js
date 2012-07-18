@@ -14,6 +14,7 @@
 ** 
 */
 
+
 !(function(exports){
  var stairs;
  var base_step = CUBOID([3.15,0.05,0.5]);
@@ -102,8 +103,6 @@
 
 stairs = STRUCT([step,step2,step3,step4,step5,step6,step7,step8,step9,step10,step11,step12,step13,step14,step15,step16]);
 
-//Crei altra parte della scala come struct e poi la ruoti di 90 degree lungo l'asse y.
-
 var base = CUBOID([3,0.2,4.4]);
  base = T([1,2])([0.60001,3.5])(base);
  var threshold = T([0,1,2])([-0.075,0.8,3.4])(base_step);
@@ -174,7 +173,7 @@ gradino = T([0,1,2])([-13.85,-0.0000001,5])(CUBOID([2,0.25,6.3]));
 gradino_2 = T([0,1,2])([-13.85,0.2499999,5.5])(CUBOID([2,0.25,5.57]));
 gradino_3 = T([0,1,2])([-14.35,-0.0000001,32])(CUBOID([3,0.25,2.5]))
 gradino_4 = T([0,1,2])([-13.85,0.2499999,32])(CUBOID([2,0.25,2]));
-//twinStairs = STRUCT([left_stair,right_stair]);
+twinStairs = STRUCT([left_stair,right_stair]);
 
 exports.model = COLOR([250/255,235/255,215/255,1])(STRUCT([left_stair,right_stair,gradino,gradino_2,gradino_3,gradino_4]));
 }(this));
