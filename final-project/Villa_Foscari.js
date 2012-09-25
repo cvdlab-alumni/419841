@@ -1785,14 +1785,5 @@ var detailedDomain = DOMAIN([[0,1],[0,2*PI]])([10,10]);
 
     }(this));
 
-      var centerProject = function() {
-            // p is the Plasm global viewer
-      	var cameraControls = p.controls.controls;
-      	var boundingRadius = p.scene.getBoundingRadius();
-      
-      	cameraControls.placeCamera(new THREE.Vector3(1.1*boundingRadius, -1.1*boundingRadius, 0.2*boundingRadius), new THREE.Vector3(), new THREE.Vector3(0,0,1));
-      };
-
     var model = STRUCT([garden,twinStairs,roof,stuff,colonnade,banisters,backFacade,gable,mainBuilding,colonnadeBasement,chimneyPots]);
     DRAW(model);
-    centerProject();
